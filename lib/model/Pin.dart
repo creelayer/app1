@@ -1,5 +1,6 @@
 
 class Pin{
+
   final int code;
   final String phone;
 

@@ -6,14 +6,16 @@ import 'package:app1/repository/PinRepository.dart';
 class FakePinRepository extends PinRepository {
   @override
   Future<Pin> create(Pin pin) {
-    // TODO: implement create
-    throw UnimplementedError();
+    return Future.delayed(Duration(seconds: 2), () {
+      return pin;
+    });
   }
 
   @override
   Future<bool> validate(Pin pin) {
-    // TODO: implement validate
-    throw UnimplementedError();
+    return Future.delayed(Duration(seconds: 2), () {
+      return Future.value(true);
+    });
   }
 
 }

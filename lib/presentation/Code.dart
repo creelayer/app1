@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:app1/component/dialog/InformDialog.dart';
+import 'package:app1/component/validator/BaseValidatorBuilder.dart';
 import 'package:app1/model/AccessToken.dart';
 import 'package:app1/model/Pin.dart';
 import 'package:app1/model/User.dart';
@@ -102,9 +104,27 @@ class _LoginState extends State<Code> {
   }
 
   void _login() {
+
+    String pin = _pin.join();
+
+    final validate =
+    BaseValidatorBuilder().pin("Invalid pin format").build();
+
+    String message = validate(pin);
+
+    if (message != null) {
+      showCupertinoDialog(
+          context: context,
+          builder: (context) =>
+              InformDialog.ok(context, Text('error'), Text(message)));
+
+      return _btnController.reset();
+    }
+
     _authenticationService
-        .auth(Pin(int.parse(_pin.join()), _phone))
+        .auth(Pin(int.parse(pin), _phone))
         .then((AccessToken token) {
+
       _btnController.reset();
     });
 

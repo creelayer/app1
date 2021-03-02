@@ -1,5 +1,6 @@
-import 'dart:async';
 
+import 'package:app1/component/dialog/InformDialog.dart';
+import 'package:app1/component/validator/BaseValidatorBuilder.dart';
 import 'package:app1/presentation/Code.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -65,13 +66,27 @@ class _LoginState extends State<Login> {
         RoundedLoadingButton(
           child: Text('Вхід', style: TextStyle(color: Colors.white)),
           controller: _btnController,
-          onPressed: _login,
+          onPressed: _next,
         ),
       ],
     ));
   }
 
-  void _login() {
+  void _next() {
+
+    final validate =
+        BaseValidatorBuilder().phone("Invalid number format").build();
+
+    String message = validate(_phoneController.value.text);
+
+    if (message != null) {
+      showCupertinoDialog(
+          context: context,
+          builder: (context) =>
+              InformDialog.ok(context, Text('error'), Text(message)));
+
+      return _btnController.reset();
+    }
 
     _btnController.reset();
 
